@@ -1,91 +1,184 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Miami-Dade Clerk Self-Service Kiosk Prototype</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Miami-Dade Clerk Self-Service Kiosk</title>
 <style>
-:root { --navy:#102a43; --blue:#0b5cab; --light:#f4f7fb; --ink:#172b4d; --muted:#5b7083; --ok:#177245; }
-*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--light);color:var(--ink)}
-header{background:var(--navy);color:#fff;padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
-.brand{font-size:22px;font-weight:700}.badge{font-size:13px;opacity:.9}
-main{max-width:1100px;margin:0 auto;padding:28px}
+:root{
+  --navy:#062744; --navy2:#0b3a63; --blue:#0e5f9d; --light:#f3f7fb; --line:#c9d6e2;
+  --gold:#f3b61f; --green:#15803d; --red:#b42318; --text:#132238; --muted:#5f7185;
+  --card:#fff; --shadow:0 10px 28px rgba(8,39,68,.12); --radius:18px; --font:Arial,Helvetica,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);background:var(--light);color:var(--text)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:14px 18px;position:sticky;top:0;z-index:20;box-shadow:0 3px 14px rgba(0,0,0,.2)}
+.brand{display:flex;align-items:center;gap:12px;max-width:1180px;margin:auto}
+.seal{width:52px;height:52px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:900;border:4px solid var(--gold)}
+.brand h1{font-size:19px;margin:0}.brand p{font-size:12px;margin:3px 0 0;opacity:.86}
+.tools{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.toolbtn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.1);color:#fff;border-radius:10px;padding:10px 12px;font-weight:700}
+main{max-width:1180px;margin:auto;padding:22px}
+.hero{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border-top:6px solid var(--gold);margin-bottom:18px}
+.hero h2{margin:0 0 7px;font-size:27px;color:var(--navy)}.hero p{margin:0;color:var(--muted);line-height:1.45}
+.notice{margin-top:14px;background:#fff8df;border:1px solid #f4d66f;padding:12px;border-radius:12px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;text-align:left;min-height:156px;box-shadow:0 4px 12px rgba(8,39,68,.06);transition:.15s}
+.card:hover,.card:focus{transform:translateY(-2px);border-color:var(--blue);box-shadow:var(--shadow)}
+.card .icon{font-size:31px}.card h3{margin:12px 0 5px;color:var(--navy);font-size:18px}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.4}
 .screen{display:none}.screen.active{display:block}
-h1{font-size:34px;margin:12px 0 8px}.sub{font-size:18px;color:var(--muted);margin-bottom:24px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-button{width:100%;padding:24px 18px;border:0;border-radius:14px;background:#fff;color:var(--ink);font-size:20px;font-weight:700;box-shadow:0 2px 10px #0001;cursor:pointer}
-button:hover{outline:3px solid #8ab4f8}.primary{background:var(--blue);color:#fff}.secondary{background:#e7eef7}
-.panel{background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 12px #0001;max-width:760px;margin:auto}
-label{display:block;font-weight:700;margin:18px 0 8px} input,select{width:100%;font-size:22px;padding:16px;border:2px solid #b7c5d4;border-radius:10px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}.actions.one{grid-template-columns:1fr}
-.ticket{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#f7fafc;padding:18px;border-radius:12px;margin:18px 0}
-.ticket div{padding:8px}.amount{font-size:30px;font-weight:800}.success{text-align:center}.check{font-size:58px;color:var(--ok)}
-.notice{background:#fff8dc;border-left:5px solid #d6a500;padding:14px;margin:18px 0}
-footer{max-width:1100px;margin:auto;padding:0 28px 28px;display:flex;gap:12px}
-footer button{font-size:16px;padding:14px}
-.lang{font-size:14px}
-@media(max-width:700px){.grid,.actions,.ticket{grid-template-columns:1fr}h1{font-size:28px}}
+.panel{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.panel h2{color:var(--navy);margin-top:0}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:0;border-radius:11px;padding:12px 16px;font-weight:800}
+.primary{background:var(--blue);color:#fff}.secondary{background:#e8f0f7;color:var(--navy)}.danger{background:#fee4e2;color:var(--red)}.success{background:#dcfce7;color:#14532d}.gold{background:var(--gold);color:#2b2103}
+.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.field label{display:block;font-size:13px;font-weight:800;margin-bottom:6px;color:var(--navy)}
+.field input,.field select,.field textarea{width:100%;padding:13px;border:1px solid var(--line);border-radius:11px;background:#fff}
+.field textarea{min-height:100px}.full{grid-column:1/-1}
+.result{border:1px solid var(--line);border-radius:14px;padding:15px;margin-top:16px;background:#fbfdff}
+.row{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid #e8eef4}.row:last-child{border-bottom:0}.row span:first-child{color:var(--muted)}.row strong{text-align:right}
+.badge{display:inline-block;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;background:#dff4e8;color:#17613a}
+.breadcrumb{display:flex;gap:8px;align-items:center;margin-bottom:12px;color:var(--muted);font-size:13px}
+.footer{max-width:1180px;margin:24px auto;padding:0 22px 30px;color:var(--muted);font-size:12px;text-align:center}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
+.modal.open{display:flex}.modalbox{background:#fff;border-radius:18px;max-width:560px;width:100%;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.3)}
+.adminbar{background:#0d1b2a;color:#fff;border-radius:14px;padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.kpi{padding:16px;border-radius:14px;background:#f3f7fb;border:1px solid var(--line)}.kpi strong{font-size:25px;color:var(--navy);display:block}
+table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;border-bottom:1px solid #e6edf3;text-align:left;font-size:13px}th{color:var(--navy)}
+.access body{}
+body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--text:#fff;--muted:#ddd;--line:#777;--navy:#fff;--navy2:#111;--blue:#ffd400}.high-contrast .panel,.high-contrast .hero,.high-contrast .card,.high-contrast .modalbox{background:#000;color:#fff}.high-contrast input,.high-contrast select,.high-contrast textarea{background:#111;color:#fff}
+.session{font-size:12px;margin-left:8px;opacity:.85}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.kpis{grid-template-columns:repeat(2,1fr)}.tools{display:none}}
+@media(max-width:560px){main{padding:14px}.grid{grid-template-columns:1fr 1fr;gap:10px}.card{min-height:146px;padding:14px}.card h3{font-size:16px}.hero h2{font-size:22px}.brand h1{font-size:16px}.seal{width:44px;height:44px}.actions .btn{flex:1 1 45%}.row{font-size:13px}}
 </style>
 </head>
 <body>
-<header><div class="brand">Miami-Dade Clerk of the Court and Comptroller</div><div class="badge">SELF-SERVICE KIOSK • PROTOTYPE</div></header>
+<header class="topbar">
+  <div class="brand">
+    <div class="seal">MD</div>
+    <div><h1>Miami-Dade Clerk of the Court and Comptroller</h1><p>Self-Service Kiosk Prototype</p></div>
+    <div class="tools">
+      <button class="toolbtn" onclick="showModal('languageModal')">🌐 Language</button>
+      <button class="toolbtn" onclick="showModal('accessModal')">♿ Accessibility</button>
+      <button class="toolbtn" onclick="startOver()">↻ Start Over</button>
+    </div>
+    <span class="session" id="sessionTimer">Session 10:00</span>
+  </div>
+</header>
+
 <main>
 <section id="home" class="screen active">
-<h1>How can we help you today?</h1><div class="sub">Select a service. You can start over at any time.</div>
-<div class="grid">
-<button onclick="show('tickets')">🎫 Traffic Tickets</button>
-<button onclick="show('parking')">🅿️ Parking Tickets</button>
-<button onclick="show('civil')">⚖️ Civil / Court Cases</button>
-<button onclick="show('family')">👨‍👩‍👧 Family / Probate</button>
-<button onclick="show('marriage')">💍 Marriage License Intake</button>
-<button onclick="show('records')">📄 Court & Official Records</button>
-<button onclick="show('payments')">💳 Payments</button>
-<button onclick="show('appointments')">📅 Appointments</button>
-</div>
+  <div class="hero">
+    <h2>How can we help you today?</h2>
+    <p>Choose a service below. This prototype demonstrates a future public self-service experience for common Clerk services.</p>
+    <div class="notice"><strong>Prototype only:</strong> Searches, payments, records, appointments and receipts shown here are simulated. A production kiosk would connect to official Clerk, court, payment, identity, printer and scheduling systems.</div>
+  </div>
+  <div class="grid">
+    <button class="card" onclick="openService('traffic')"><div class="icon">🚦</div><h3>Traffic Tickets</h3><p>Check citation status, amounts due, payment options, payment plans and receipts.</p></button>
+    <button class="card" onclick="openService('parking')"><div class="icon">🅿️</div><h3>Parking Tickets</h3><p>Search by citation or tag, review violations and make a payment.</p></button>
+    <button class="card" onclick="openService('civil')"><div class="icon">⚖️</div><h3>Civil & Court Cases</h3><p>Find case information, view docket activity and request available documents.</p></button>
+    <button class="card" onclick="openService('family')"><div class="icon">👪</div><h3>Family & Probate</h3><p>Case lookup, filing information, probate and family court services.</p></button>
+    <button class="card" onclick="openService('marriage')"><div class="icon">💍</div><h3>Marriage License</h3><p>Start marriage-license intake and review next steps before visiting the Clerk.</p></button>
+    <button class="card" onclick="openService('records')"><div class="icon">📚</div><h3>Court & Official Records</h3><p>Search public records, preview available documents and request copies.</p></button>
+    <button class="card" onclick="openService('appointments')"><div class="icon">📅</div><h3>Appointments</h3><p>Schedule Clerk assistance for services that require an in-person visit.</p></button>
+    <button class="card" onclick="openService('receipts')"><div class="icon">🧾</div><h3>Payments & Receipts</h3><p>Retrieve a simulated transaction receipt and print or email a copy.</p></button>
+    <button class="card" onclick="openService('print')"><div class="icon">🖨️</div><h3>Print Documents</h3><p>Review page count, printing fee, payment and kiosk print confirmation.</p></button>
+    <button class="card" onclick="openService('help')"><div class="icon">🙋</div><h3>Clerk Assistance</h3><p>Get directions, common answers or request assistance from Clerk staff.</p></button>
+    <button class="card" onclick="openService('admin')"><div class="icon">🔐</div><h3>Employee Administration</h3><p>Prototype dashboard for kiosk health, reports, settings and audit logs.</p></button>
+  </div>
 </section>
 
-<section id="tickets" class="screen">
-<div class="panel"><h1>Traffic Ticket</h1><div class="sub">Enter a citation/case number for this prototype.</div>
-<label for="citation">Citation / Case Number</label><input id="citation" placeholder="Example: T202600001">
-<div class="actions"><button class="primary" onclick="lookupTicket()">Find Ticket</button><button class="secondary" onclick="show('home')">Back</button></div>
-<div class="notice">Prototype mode uses sample data. Production lookup will require an authorized Miami-Dade Clerk API integration.</div>
-</div></section>
-
-<section id="ticket-result" class="screen">
-<div class="panel"><h1>Ticket Found</h1>
-<div class="ticket"><div><b>Case Number</b><br><span id="r-case"></span></div><div><b>Status</b><br>OPEN</div><div><b>Violation</b><br>Traffic citation</div><div><b>Issue Date</b><br>08/01/2026</div></div>
-<div><b>Amount Due</b><div class="amount">$125.00</div></div>
-<div class="actions"><button class="primary" onclick="show('pay')">Pay Now</button><button onclick="show('plan')">Payment Plan</button></div>
-<div class="actions one"><button class="secondary" onclick="show('home')">Start Over</button></div>
-</div></section>
-
-<section id="pay" class="screen"><div class="panel"><h1>Payment</h1><div class="sub">Review the payment before proceeding.</div>
-<div class="ticket"><div><b>Amount</b><br>$125.00</div><div><b>Service</b><br>Traffic citation</div></div>
-<label>Payment method</label><select><option>Card / approved payment terminal</option></select>
-<div class="notice">This prototype does not process real payments and does not collect card numbers.</div>
-<div class="actions"><button class="primary" onclick="show('receipt')">Simulate Approved Payment</button><button class="secondary" onclick="show('ticket-result')">Back</button></div>
-</div></section>
-
-<section id="receipt" class="screen"><div class="panel success"><div class="check">✓</div><h1>Payment Approved</h1><div class="sub">Prototype transaction completed.</div>
-<div class="ticket"><div><b>Transaction</b><br>DEMO-20260812-0001</div><div><b>Amount</b><br>$125.00</div><div><b>Service</b><br>Traffic citation</div><div><b>Status</b><br>PAID — DEMO</div></div>
-<div class="actions"><button onclick="alert('Prototype: receipt sent to printer.')">Print Receipt</button><button onclick="alert('Prototype: receipt delivery selected.')">Email / Text Receipt</button></div>
-<div class="actions one"><button class="primary" onclick="resetKiosk()">Finish / Start Over</button></div>
-</div></section>
-
-<section id="parking" class="screen"><div class="panel"><h1>Parking Ticket</h1><div class="sub">Enter or scan a parking citation.</div><label>Citation Number</label><input placeholder="Enter citation number"><div class="actions"><button class="primary" onclick="alert('Prototype: parking lookup would call the authorized parking service.')">Find Ticket</button><button class="secondary" onclick="show('home')">Back</button></div></div></section>
-<section id="civil" class="screen"><div class="panel"><h1>Civil / Court Case</h1><div class="sub">Search by case number.</div><label>Case Number</label><input placeholder="Enter case number"><div class="actions"><button class="primary" onclick="alert('Prototype: civil lookup would call the authorized Clerk API.')">Search Case</button><button class="secondary" onclick="show('home')">Back</button></div></div></section>
-<section id="family" class="screen"><div class="panel"><h1>Family / Probate</h1><div class="sub">Case search and eligible services.</div><div class="grid"><button>Search Family Case</button><button>Search Probate Case</button><button>View Court Date</button><button>Pay Eligible Fees</button></div><div class="actions one"><button class="secondary" onclick="show('home')">Back</button></div></div></section>
-<section id="marriage" class="screen"><div class="panel"><h1>Marriage License Intake</h1><div class="sub">Start a guided intake. No real submission occurs in this prototype.</div><div class="grid"><button onclick="alert('Prototype: applicant 1 form')">Applicant 1</button><button onclick="alert('Prototype: applicant 2 form')">Applicant 2</button><button onclick="alert('Prototype: document checklist')">Required Documents</button><button onclick="alert('Prototype: review and signature')">Review & Sign</button></div><div class="actions one"><button class="secondary" onclick="show('home')">Back</button></div></div></section>
-<section id="records" class="screen"><div class="panel"><h1>Court & Official Records</h1><div class="sub">Prototype search menu.</div><div class="grid"><button>Search by Name</button><button>Clerk's File Number</button><button>Book & Page</button><button>Folio</button></div><div class="actions one"><button class="secondary" onclick="show('home')">Back</button></div></div></section>
-<section id="payments" class="screen"><div class="panel"><h1>Payments</h1><div class="sub">Find a balance or make an approved payment.</div><div class="grid"><button>Payment Plan</button><button>Court Fees</button><button>Document Fees</button><button>Payment History</button></div><div class="actions one"><button class="secondary" onclick="show('home')">Back</button></div></div></section>
-<section id="appointments" class="screen"><div class="panel"><h1>Appointments</h1><div class="sub">Prototype appointment menu.</div><div class="grid"><button>Make Appointment</button><button>Check Appointment</button><button>Reschedule</button><button>Cancel</button></div><div class="actions one"><button class="secondary" onclick="show('home')">Back</button></div></div></section>
-<section id="plan" class="screen"><div class="panel"><h1>Payment Plan</h1><div class="sub">Eligibility and terms must come from the authorized Clerk system.</div><div class="notice">Prototype only — no plan is created here.</div><div class="actions"><button class="primary" onclick="alert('Prototype: eligibility check')">Check Eligibility</button><button class="secondary" onclick="show('ticket-result')">Back</button></div></div></section>
+<section id="service" class="screen">
+  <div class="breadcrumb"><button class="btn secondary" onclick="goHome()">← Home</button><span id="crumb">Service</span></div>
+  <div id="serviceContent"></div>
+</section>
 </main>
-<footer><button class="lang" onclick="alert('Language selector: English / Español / Kreyòl Ayisyen')">English / Español / Kreyòl Ayisyen</button><button onclick="alert('Prototype help screen')">I Need Help</button><button onclick="resetKiosk()">Start Over</button></footer>
+
+<div class="footer">Miami-Dade Clerk Self-Service Kiosk • Concept Prototype • No real payment or official record is processed by this demo.</div>
+
+<div id="languageModal" class="modal"><div class="modalbox">
+  <h2>Choose Language</h2><p>Select the preferred kiosk language.</p>
+  <div class="actions"><button class="btn primary" onclick="setLang('English')">English</button><button class="btn secondary" onclick="setLang('Español')">Español</button><button class="btn secondary" onclick="setLang('Kreyòl')">Kreyòl</button><button class="btn secondary" onclick="hideModal('languageModal')">Cancel</button></div>
+</div></div>
+
+<div id="accessModal" class="modal"><div class="modalbox">
+  <h2>Accessibility</h2>
+  <div class="actions"><button class="btn secondary" onclick="document.body.classList.toggle('large-text')">A+ Large Text</button><button class="btn secondary" onclick="document.body.classList.toggle('high-contrast')">◐ High Contrast</button><button class="btn secondary" onclick="speakPage()">🔊 Read Screen</button><button class="btn secondary" onclick="hideModal('accessModal')">Done</button></div>
+</div></div>
+
+<div id="payModal" class="modal"><div class="modalbox">
+  <h2>Secure Payment - Prototype</h2>
+  <p id="payText"></p>
+  <div class="formgrid">
+    <div class="field full"><label>Payment Method</label><select><option>Credit / Debit Card</option><option>Digital Wallet</option><option>Cash (supported kiosk)</option></select></div>
+    <div class="field"><label>Name on Card</label><input value="Demo Customer"></div><div class="field"><label>Last 4 digits</label><input value="4242" maxlength="4"></div>
+  </div>
+  <div class="actions"><button class="btn primary" onclick="completePayment()">Pay Now</button><button class="btn secondary" onclick="hideModal('payModal')">Cancel</button></div>
+</div></div>
+
 <script>
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
-function lookupTicket(){const v=document.getElementById('citation').value.trim()||'DEMO-TICKET-001';document.getElementById('r-case').textContent=v;show('ticket-result')}
-function resetKiosk(){document.querySelectorAll('input').forEach(i=>i.value='');show('home')}
+let currentLang='English', paymentContext={}, secondsLeft=600;
+const service=document.getElementById('service'), home=document.getElementById('home'), content=document.getElementById('serviceContent');
+
+function showModal(id){document.getElementById(id).classList.add('open'); resetTimer()}
+function hideModal(id){document.getElementById(id).classList.remove('open'); resetTimer()}
+function goHome(){service.classList.remove('active');home.classList.add('active');content.innerHTML='';resetTimer()}
+function startOver(){goHome();document.body.classList.remove('large-text','high-contrast');secondsLeft=600}
+function resetTimer(){secondsLeft=600}
+['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer,{passive:true}));
+setInterval(()=>{secondsLeft--; let m=Math.floor(secondsLeft/60),s=secondsLeft%60; document.getElementById('sessionTimer').textContent=`Session ${m}:${String(s).padStart(2,'0')}`; if(secondsLeft<=0){alert('Session ended for privacy. Returning to the home screen.');startOver()}},1000);
+function setLang(l){currentLang=l;hideModal('languageModal');alert('Prototype language set to '+l+'. Full production translations would be applied to every screen.')}
+function speakPage(){if('speechSynthesis' in window){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(document.body.innerText.slice(0,2500)))}}
+function openService(type){
+  home.classList.remove('active');service.classList.add('active');window.scrollTo(0,0);resetTimer();
+  const map={traffic:'Traffic Tickets',parking:'Parking Tickets',civil:'Civil & Court Cases',family:'Family & Probate',marriage:'Marriage License Intake',records:'Court & Official Records',appointments:'Appointments',receipts:'Payments & Receipts',print:'Print Documents',help:'Clerk Assistance',admin:'Employee Administration'};
+  document.getElementById('crumb').textContent=map[type]||'Service';
+  if(type==='traffic') traffic(); else if(type==='parking') parking(); else if(type==='civil') civil(); else if(type==='family') family();
+  else if(type==='marriage') marriage(); else if(type==='records') records(); else if(type==='appointments') appointments(); else if(type==='receipts') receipts();
+  else if(type==='print') printCenter(); else if(type==='help') help(); else if(type==='admin') admin();
+}
+function panel(title,body){content.innerHTML=`<div class="panel"><h2>${title}</h2>${body}</div>`}
+function traffic(){
+panel('Traffic Ticket Search',`<p>Search for a traffic citation and review status, balance, payment-plan eligibility and available actions.</p>
+<div class="formgrid"><div class="field"><label>Citation Number</label><input id="tCitation" value="A12345678"></div><div class="field"><label>Driver License Number</label><input placeholder="Optional"></div><div class="field"><label>Date of Birth</label><input type="date"></div><div class="field"><label>Last Name</label><input value="GONZALEZ"></div></div>
+<div class="actions"><button class="btn primary" onclick="trafficResult()">Search Citation</button><button class="btn secondary" onclick="goHome()">Cancel</button></div>`)}
+function trafficResult(){panel('Traffic Citation Result',`<div class="result"><div class="row"><span>Citation</span><strong>A12345678</strong></div><div class="row"><span>Violation</span><strong>Speeding - Demo Record</strong></div><div class="row"><span>Status</span><strong><span class="badge">OPEN</span></strong></div><div class="row"><span>Amount Due</span><strong>$189.00</strong></div><div class="row"><span>Due Date</span><strong>09/15/2026</strong></div></div>
+<div class="actions"><button class="btn primary" onclick="pay(189,'Traffic Citation A12345678')">Pay $189.00</button><button class="btn gold" onclick="paymentPlan()">Payment Plan</button><button class="btn secondary" onclick="printQuote('Traffic citation summary',2)">Print Summary</button><button class="btn secondary" onclick="traffic()">New Search</button></div>`)}
+function paymentPlan(){panel('Payment Plan Eligibility',`<p>This demo citation is shown as potentially eligible for a payment plan.</p><div class="result"><div class="row"><span>Balance</span><strong>$189.00</strong></div><div class="row"><span>Example Initial Payment</span><strong>$47.25</strong></div><div class="row"><span>Example Installments</span><strong>3 × $47.25</strong></div></div><div class="notice">Actual eligibility, fees, terms and due dates must come from Clerk policy and the live case/payment system.</div><div class="actions"><button class="btn primary" onclick="pay(47.25,'Traffic payment plan initial payment')">Start Demo Plan</button><button class="btn secondary" onclick="trafficResult()">Back</button></div>`)}
+function parking(){panel('Parking Ticket Search',`<p>Look up a parking citation by citation number or vehicle tag.</p><div class="formgrid"><div class="field"><label>Parking Citation</label><input value="P9876543"></div><div class="field"><label>License Plate / Tag</label><input value="ABC123"></div><div class="field"><label>State</label><select><option>Florida</option><option>Other</option></select></div></div><div class="actions"><button class="btn primary" onclick="parkingResult()">Search</button></div>`)}
+function parkingResult(){panel('Parking Ticket Result',`<div class="result"><div class="row"><span>Citation</span><strong>P9876543</strong></div><div class="row"><span>Violation</span><strong>Expired Meter - Demo</strong></div><div class="row"><span>Amount Due</span><strong>$36.00</strong></div><div class="row"><span>Status</span><strong><span class="badge">OPEN</span></strong></div></div><div class="actions"><button class="btn primary" onclick="pay(36,'Parking Citation P9876543')">Pay $36.00</button><button class="btn secondary" onclick="printQuote('Parking citation receipt/summary',1)">Print</button><button class="btn secondary" onclick="parking()">New Search</button></div>`)}
+function civil(){panel('Civil & Court Case Search',`<p>Search by case number or party name.</p><div class="formgrid"><div class="field"><label>Case Number</label><input value="2026-012345-CA-01"></div><div class="field"><label>Party Name</label><input placeholder="Last, First"></div><div class="field"><label>Case Type</label><select><option>All Civil</option><option>County Civil</option><option>Circuit Civil</option><option>Small Claims</option></select></div></div><div class="actions"><button class="btn primary" onclick="civilResult()">Search Cases</button></div>`)}
+function civilResult(){panel('Civil Case Summary',`<div class="result"><div class="row"><span>Case</span><strong>2026-012345-CA-01</strong></div><div class="row"><span>Type</span><strong>Circuit Civil - Demo</strong></div><div class="row"><span>Status</span><strong>Open</strong></div><div class="row"><span>Next Event</span><strong>Case Management Conference</strong></div></div><h3>Available Documents</h3><table><tr><th>Document</th><th>Pages</th><th>Action</th></tr><tr><td>Case Summary</td><td>2</td><td><button class="btn secondary" onclick="printQuote('Civil Case Summary',2)">View / Print</button></td></tr><tr><td>Docket Activity</td><td>4</td><td><button class="btn secondary" onclick="printQuote('Docket Activity',4)">View / Print</button></td></tr></table><div class="actions"><button class="btn secondary" onclick="civil()">New Search</button></div>`)}
+function family(){panel('Family & Probate Services',`<div class="grid"><button class="card" onclick="familySearch('Family')"><div class="icon">👨‍👩‍👧</div><h3>Family Case Search</h3><p>Locate a family case and review available case information.</p></button><button class="card" onclick="familySearch('Probate')"><div class="icon">📜</div><h3>Probate Search</h3><p>Locate probate case information and available records.</p></button><button class="card" onclick="help()"><div class="icon">ℹ️</div><h3>Filing Guidance</h3><p>See general instructions and request Clerk assistance.</p></button></div>`)}
+function familySearch(kind){panel(kind+' Case Search',`<div class="formgrid"><div class="field"><label>Case Number</label><input value="2026-000123-${kind==='Family'?'FC':'CP'}-01"></div><div class="field"><label>Party / Decedent Name</label><input></div></div><div class="actions"><button class="btn primary" onclick="familyResult('${kind}')">Search</button><button class="btn secondary" onclick="family()">Back</button></div>`)}
+function familyResult(kind){panel(kind+' Case Result',`<div class="result"><div class="row"><span>Case Type</span><strong>${kind} - Demo Record</strong></div><div class="row"><span>Status</span><strong>Open</strong></div><div class="row"><span>Available Public Documents</span><strong>3</strong></div></div><div class="notice">Sensitive, confidential or restricted information would not be exposed on a public kiosk.</div><div class="actions"><button class="btn secondary" onclick="printQuote('${kind} case public summary',2)">Print Public Summary</button><button class="btn secondary" onclick="family()">Back</button></div>`)}
+function marriage(){panel('Marriage License Intake',`<p>Complete a guided intake before your Clerk visit.</p>
+<div class="formgrid"><div class="field"><label>Applicant 1 Full Name</label><input value="Alex Example"></div><div class="field"><label>Applicant 1 Date of Birth</label><input type="date"></div><div class="field"><label>Applicant 2 Full Name</label><input value="Jordan Example"></div><div class="field"><label>Applicant 2 Date of Birth</label><input type="date"></div><div class="field"><label>County of Residence</label><input value="Miami-Dade"></div><div class="field"><label>Preferred Language</label><select><option>English</option><option>Español</option><option>Kreyòl</option></select></div><div class="field full"><label>Contact Email</label><input type="email" value="demo@example.com"></div></div>
+<div class="notice">A production workflow would include all legally required questions, identity/document instructions, disclosures, signatures, applicable waiting-period information and official appointment availability.</div>
+<div class="actions"><button class="btn primary" onclick="marriageReview()">Review Intake</button><button class="btn secondary" onclick="goHome()">Cancel</button></div>`)}
+function marriageReview(){panel('Review Marriage Intake',`<div class="result"><div class="row"><span>Applicant 1</span><strong>Alex Example</strong></div><div class="row"><span>Applicant 2</span><strong>Jordan Example</strong></div><div class="row"><span>Residence</span><strong>Miami-Dade</strong></div><div class="row"><span>Intake Status</span><strong><span class="badge">READY FOR CLERK REVIEW</span></strong></div></div><div class="actions"><button class="btn primary" onclick="appointmentPreset('Marriage License')">Schedule Appointment</button><button class="btn secondary" onclick="printQuote('Marriage intake confirmation',3)">Print Confirmation</button><button class="btn secondary" onclick="marriage()">Edit</button></div>`)}
+function records(){panel('Court & Official Records Search',`<div class="formgrid"><div class="field"><label>Record Type</label><select id="recordType"><option>Court Record</option><option>Official Record</option><option>Recording / Book & Page</option></select></div><div class="field"><label>Name / Case / Instrument Number</label><input value="DEMO-2026-1001"></div><div class="field"><label>From Date</label><input type="date"></div><div class="field"><label>To Date</label><input type="date"></div></div><div class="actions"><button class="btn primary" onclick="recordsResult()">Search Records</button></div>`)}
+function recordsResult(){panel('Record Search Results',`<table><tr><th>Record</th><th>Date</th><th>Pages</th><th>Action</th></tr><tr><td>DEMO-2026-1001</td><td>08/01/2026</td><td>5</td><td><button class="btn secondary" onclick="printQuote('Official record DEMO-2026-1001',5)">Preview / Print</button></td></tr><tr><td>DEMO-2026-1002</td><td>08/03/2026</td><td>2</td><td><button class="btn secondary" onclick="printQuote('Official record DEMO-2026-1002',2)">Preview / Print</button></td></tr></table><div class="actions"><button class="btn secondary" onclick="records()">New Search</button></div>`)}
+function appointments(){panel('Schedule Clerk Assistance',`<div class="formgrid"><div class="field"><label>Service</label><select id="apptService"><option>Marriage License</option><option>Civil / Court Records</option><option>Family / Probate</option><option>Traffic Assistance</option><option>Official Records</option></select></div><div class="field"><label>Location</label><select><option>Downtown Miami - Demo</option><option>North Dade - Demo</option><option>South Dade - Demo</option></select></div><div class="field"><label>Date</label><input type="date"></div><div class="field"><label>Time</label><select><option>9:00 AM</option><option>10:30 AM</option><option>1:00 PM</option><option>2:30 PM</option></select></div><div class="field full"><label>Email / Mobile</label><input value="demo@example.com"></div></div><div class="actions"><button class="btn primary" onclick="confirmAppointment()">Reserve Demo Appointment</button></div>`)}
+function appointmentPreset(s){appointments(); setTimeout(()=>{let e=document.getElementById('apptService');if(e) e.value=s},0)}
+function confirmAppointment(){panel('Appointment Confirmation',`<div class="result"><div class="row"><span>Confirmation</span><strong>MDC-APT-82641</strong></div><div class="row"><span>Status</span><strong><span class="badge">RESERVED</span></strong></div><div class="row"><span>Location</span><strong>Downtown Miami - Demo</strong></div></div><div class="actions"><button class="btn secondary" onclick="printQuote('Appointment confirmation',1)">Print Confirmation</button><button class="btn primary" onclick="goHome()">Done</button></div>`)}
+function receipts(){panel('Find a Receipt',`<div class="formgrid"><div class="field"><label>Receipt / Transaction Number</label><input value="MDC-826410"></div><div class="field"><label>Payment Date</label><input type="date"></div><div class="field"><label>Last Name</label><input value="GONZALEZ"></div></div><div class="actions"><button class="btn primary" onclick="receiptResult()">Find Receipt</button></div>`)}
+function receiptResult(){panel('Receipt',`<div class="result"><div class="row"><span>Transaction</span><strong>MDC-826410</strong></div><div class="row"><span>Service</span><strong>Traffic Citation - Demo</strong></div><div class="row"><span>Payment</span><strong>$189.00</strong></div><div class="row"><span>Print Fee</span><strong>$1.00</strong></div><div class="row"><span>Total</span><strong>$190.00</strong></div></div><div class="actions"><button class="btn secondary" onclick="printQuote('Transaction receipt',1)">Print Receipt</button><button class="btn secondary" onclick="alert('Demo: receipt would be sent to the verified email or mobile number.')">Email / Text Receipt</button><button class="btn primary" onclick="goHome()">Done</button></div>`)}
+function printCenter(){panel('Document Printing',`<p>Public kiosk printing is available for eligible documents. The print fee is displayed before payment.</p><div class="formgrid"><div class="field"><label>Document / Confirmation Number</label><input value="DEMO-DOC-1001"></div><div class="field"><label>Estimated Pages</label><input id="manualPages" type="number" min="1" value="4"></div></div><div class="actions"><button class="btn primary" onclick="manualPrintQuote()">Calculate Print Fee</button></div><div class="notice">Prototype print fee: <strong>$0.50 per page</strong>. This value is configurable in the employee administration dashboard and is not presented as an official Miami-Dade Clerk fee.</div>`)}
+function manualPrintQuote(){let p=Math.max(1,Number(document.getElementById('manualPages').value)||1);printQuote('Requested kiosk document',p)}
+function printQuote(name,pages){let per=.50,total=pages*per; panel('Print Review',`<div class="result"><div class="row"><span>Document</span><strong>${name}</strong></div><div class="row"><span>Pages</span><strong>${pages}</strong></div><div class="row"><span>Fee Per Page</span><strong>$${per.toFixed(2)}</strong></div><div class="row"><span>Printing Fee</span><strong>$${total.toFixed(2)}</strong></div></div><div class="notice">You must confirm the fee before payment and printing. A production receipt and audit record would identify the document, page count, fee, transaction and kiosk.</div><div class="actions"><button class="btn primary" onclick="pay(${total},'Printing: ${name.replace(/'/g,"")}')">Pay & Print</button><button class="btn secondary" onclick="goHome()">Cancel</button></div>`)}
+function help(){panel('Clerk Assistance',`<div class="grid"><button class="card" onclick="alert('Demo: common Clerk help topics would appear here.')"><div class="icon">❓</div><h3>Common Questions</h3><p>Find answers and instructions for frequent services.</p></button><button class="card" onclick="appointments()"><div class="icon">📅</div><h3>Make an Appointment</h3><p>Schedule an in-person Clerk visit.</p></button><button class="card" onclick="alert('Demo: kiosk would request a staff-assistance ticket or connect to approved help channel.')"><div class="icon">🔔</div><h3>Request Staff Help</h3><p>Ask for assistance at the kiosk location.</p></button></div>`)}
+function admin(){panel('Employee Administration Dashboard',`<div class="adminbar"><div><strong>Restricted Employee Prototype</strong><br><small>Authentication, permissions and audit controls required in production.</small></div><button class="btn gold" onclick="alert('Demo login only. Production would require Clerk identity and role-based access.')">Employee Sign In</button></div>
+<div class="kpis"><div class="kpi"><strong>12</strong>Kiosks Online</div><div class="kpi"><strong>1</strong>Needs Attention</div><div class="kpi"><strong>326</strong>Sessions Today</div><div class="kpi"><strong>$184.50</strong>Print Fees Today</div></div>
+<h3>Kiosk Monitoring</h3><table><tr><th>Kiosk</th><th>Location</th><th>Status</th><th>Printer</th></tr><tr><td>K-001</td><td>Downtown</td><td>Online</td><td>Ready</td></tr><tr><td>K-004</td><td>South Dade</td><td>Online</td><td>Low Paper</td></tr><tr><td>K-009</td><td>North Dade</td><td>Online</td><td>Ready</td></tr></table>
+<h3>Configuration</h3><div class="formgrid"><div class="field"><label>Printing Fee Per Page</label><input value="$0.50"></div><div class="field"><label>Public Session Timeout</label><select><option>10 minutes</option><option>5 minutes</option><option>15 minutes</option></select></div></div>
+<h3>Audit Log Preview</h3><table><tr><th>Time</th><th>Kiosk</th><th>Event</th></tr><tr><td>10:11</td><td>K-001</td><td>Traffic payment completed</td></tr><tr><td>10:13</td><td>K-004</td><td>Document printed - 4 pages</td></tr><tr><td>10:16</td><td>K-009</td><td>Session privacy reset</td></tr></table>
+<div class="actions"><button class="btn secondary" onclick="alert('Demo: daily/weekly service, revenue, printing and device-health reports would be generated here.')">Reports</button><button class="btn secondary" onclick="alert('Demo: configuration changes would require permissions and be written to the audit log.')">Save Settings</button><button class="btn primary" onclick="goHome()">Exit Admin</button></div>`)}
+function pay(amount,label){paymentContext={amount,label};document.getElementById('payText').innerHTML=`<strong>${label}</strong><br>Amount to charge: <strong>$${Number(amount).toFixed(2)}</strong>`;showModal('payModal')}
+function completePayment(){hideModal('payModal');let tx='MDC-'+Math.floor(100000+Math.random()*899999);panel('Payment Approved',`<div class="result"><div class="row"><span>Transaction</span><strong>${tx}</strong></div><div class="row"><span>Description</span><strong>${paymentContext.label}</strong></div><div class="row"><span>Amount</span><strong>$${Number(paymentContext.amount).toFixed(2)}</strong></div><div class="row"><span>Status</span><strong><span class="badge">APPROVED</span></strong></div></div><div class="notice">No real money was charged. In production this screen would wait for the approved payment processor and device before showing success.</div><div class="actions"><button class="btn secondary" onclick="window.print()">Print Receipt</button><button class="btn secondary" onclick="alert('Demo: receipt would be sent electronically after verification.')">Email / Text Receipt</button><button class="btn primary" onclick="goHome()">Finish & Clear Session</button></div>`)}
 </script>
 </body>
 </html>
