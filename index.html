@@ -43,7 +43,7 @@ main{max-width:1180px;margin:auto;padding:22px}
 .badge{display:inline-block;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;background:#dff4e8;color:#17613a}
 .breadcrumb{display:flex;gap:8px;align-items:center;margin-bottom:12px;color:var(--muted);font-size:13px}
 .footer{max-width:1180px;margin:24px auto;padding:0 22px 30px;color:var(--muted);font-size:12px;text-align:center}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
+.language-gate{position:fixed;inset:0;background:linear-gradient(135deg,#062744,#0b3a63);z-index:100;display:flex;align-items:center;justify-content:center;padding:22px}.language-gate.hidden{display:none}.language-gate-box{width:min(720px,100%);background:#fff;border-radius:24px;padding:28px;box-shadow:0 24px 80px rgba(0,0,0,.35);text-align:center}.language-gate-box h1{margin:0 0 8px;color:#062744;font-size:30px}.language-gate-box p{margin:0 0 22px;color:#5f7185}.language-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.language-grid button{padding:18px;border-radius:14px;border:1px solid #c9d6e2;background:#f8fbfe;font-weight:900;font-size:18px;color:#062744}.language-grid button:hover,.language-grid button:focus{border-color:#0e5f9d;background:#eef7ff}.language-grid button:last-child{grid-column:1/-1}.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
 .modal.open{display:flex}.modalbox{background:#fff;border-radius:18px;max-width:560px;width:100%;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.3)}
 .adminbar{background:#0d1b2a;color:#fff;border-radius:14px;padding:14px;margin-bottom:14px;display:flex;justify-content:space-between;gap:12px;align-items:center}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.kpi{padding:16px;border-radius:14px;background:#f3f7fb;border:1px solid var(--line)}.kpi strong{font-size:25px;color:var(--navy);display:block}
@@ -52,10 +52,25 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
 body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--text:#fff;--muted:#ddd;--line:#777;--navy:#fff;--navy2:#111;--blue:#ffd400}.high-contrast .panel,.high-contrast .hero,.high-contrast .card,.high-contrast .modalbox{background:#000;color:#fff}.high-contrast input,.high-contrast select,.high-contrast textarea{background:#111;color:#fff}
 .session{font-size:12px;margin-left:8px;opacity:.85}.mobile-tools{display:none;background:#0b3a63;padding:8px 12px;gap:8px;position:sticky;top:80px;z-index:19}.mobile-tools .toolbtn{flex:1;padding:9px 8px;font-size:12px}.hardware{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.device{padding:14px;border:1px solid var(--line);border-radius:14px;background:#fbfdff}.device strong{display:block;color:var(--navy);margin-bottom:5px}.device .ok{color:#15803d}.device .warn{color:#b45309}.device .off{color:#b42318}.statusdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:currentColor;margin-right:6px}
 @media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.kpis{grid-template-columns:repeat(2,1fr)}.tools{display:none}.mobile-tools{display:flex}.hardware{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){main{padding:14px}.grid{grid-template-columns:1fr 1fr;gap:10px}.card{min-height:146px;padding:14px}.card h3{font-size:16px}.hero h2{font-size:22px}.brand h1{font-size:16px}.seal{width:44px;height:44px}.actions .btn{flex:1 1 45%}.row{font-size:13px}}
+@media(max-width:560px){.language-grid{grid-template-columns:1fr}.language-grid button:last-child{grid-column:auto}.language-gate-box{padding:22px}.language-gate-box h1{font-size:24px}main{padding:14px}.grid{grid-template-columns:1fr 1fr;gap:10px}.card{min-height:146px;padding:14px}.card h3{font-size:16px}.hero h2{font-size:22px}.brand h1{font-size:16px}.seal{width:44px;height:44px}.actions .btn{flex:1 1 45%}.row{font-size:13px}}
 </style>
 </head>
 <body>
+
+<div id="languageGate" class="language-gate" aria-modal="true" role="dialog">
+  <div class="language-gate-box">
+    <div class="seal" style="margin:0 auto 14px">MD</div>
+    <h1>Pick Your Language</h1>
+    <p>Select a language to begin. You can change it later at any time.</p>
+    <div class="language-grid">
+      <button onclick="beginSession('en')">English</button>
+      <button onclick="beginSession('es')">Spanish</button>
+      <button onclick="beginSession('kri')">Krio</button>
+      <button onclick="beginSession('fr')">French</button>
+      <button onclick="beginSession('ru')">Russian</button>
+    </div>
+  </div>
+</div>
 <header class="topbar">
   <div class="brand">
     <div class="seal">MD</div>
@@ -135,7 +150,7 @@ const service=document.getElementById('service'), home=document.getElementById('
 function showModal(id){document.getElementById(id).classList.add('open'); resetTimer()}
 function hideModal(id){document.getElementById(id).classList.remove('open'); resetTimer()}
 function goHome(){service.classList.remove('active');home.classList.add('active');content.innerHTML='';resetTimer()}
-function startOver(){goHome();document.body.classList.remove('large-text','high-contrast');secondsLeft=600}
+function startOver(){goHome();document.body.classList.remove('large-text','high-contrast');secondsLeft=600;showLanguageGate()}
 function resetTimer(){secondsLeft=600}
 ['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer,{passive:true}));
 setInterval(()=>{secondsLeft--; let m=Math.floor(secondsLeft/60),s=secondsLeft%60; document.getElementById('sessionTimer').textContent=`Session ${m}:${String(s).padStart(2,'0')}`; if(secondsLeft<=0){alert('Session ended for privacy. Returning to the home screen.');startOver()}},1000);
@@ -257,6 +272,25 @@ language:"Langwej",accessibility:"Accessibility",start_over:"Stat Ova",choose_la
 search:"Sarch",back:"Go Bak",home:"Om",pay:"Pe",print:"Print",new_search:"Nyuu Sarch",status:"Status",amount_due:"Moni We Yu O",due_date:"Dyu Det",payment_plan:"Payment Plan",receipt:"Risit",service:"Savis"
 }
 };
+
+function showLanguageGate(){
+  const gate=document.getElementById("languageGate");
+  if(gate){gate.classList.remove("hidden");}
+}
+function hideLanguageGate(){
+  const gate=document.getElementById("languageGate");
+  if(gate){gate.classList.add("hidden");}
+}
+function beginSession(code){
+  currentLangCode=code;
+  currentLang=langNames[code]||"English";
+  localStorage.setItem("mdcKioskLang",code);
+  applyTranslations();
+  hideLanguageGate();
+  secondsLeft=600;
+  goHome();
+}
+
 const langNames={en:"English",es:"Spanish",kri:"Krio",fr:"French",ru:"Russian"};
 let currentLangCode="en";
 function t(key){return (translations[currentLangCode]&&translations[currentLangCode][key])||translations.en[key]||key}
@@ -273,7 +307,7 @@ function setLang(code){
   alert((code==="es"?"Idioma cambiado a ":code==="fr"?"Langue changée en ":code==="ru"?"Язык изменён на ":code==="kri"?"Langwej don chenji to ":"Language changed to ")+(langNames[code]||"English"));
 }
 const savedLang=localStorage.getItem("mdcKioskLang"); if(savedLang&&translations[savedLang]) currentLangCode=savedLang;
-window.addEventListener("DOMContentLoaded",applyTranslations);
+window.addEventListener("DOMContentLoaded",()=>{applyTranslations();showLanguageGate();});
 
 
 function hardwareCenter(){panel('Hardware & Device Center',`
@@ -293,11 +327,6 @@ function simulateScan(){panel('Scanner / Camera Test',`<p>Place the document or 
 function showQRDemo(){panel('QR / Mobile Delivery',`<p>Prototype mobile handoff code:</p><div style="font-size:70px;text-align:center;padding:20px">▦</div><div class="result"><div class="row"><span>Delivery</span><strong>Secure temporary link</strong></div><div class="row"><span>Expiration</span><strong>15 minutes - demo</strong></div></div><div class="actions"><button class="btn primary" onclick="hardwareCenter()">Done</button></div>`)}
 function offlineDemo(){panel('Service Temporarily Unavailable',`<h3>We cannot reach the Clerk service right now.</h3><p>Your information has not been submitted. Please try again or request Clerk assistance.</p><div class="actions"><button class="btn primary" onclick="hardwareCenter()">Try Again</button><button class="btn secondary" onclick="help()">Request Help</button><button class="btn secondary" onclick="goHome()">Return Home</button></div>`)}
 
-
-window.addEventListener("DOMContentLoaded",()=>{
-  const seen=localStorage.getItem("mdcLangPromptSeen");
-  if(!seen){ setTimeout(()=>{ showModal("languageModal"); localStorage.setItem("mdcLangPromptSeen","1"); },500); }
-});
 
 </script>
 </body>
