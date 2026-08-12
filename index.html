@@ -50,7 +50,7 @@ main{max-width:1180px;margin:auto;padding:22px}
 table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;border-bottom:1px solid #e6edf3;text-align:left;font-size:13px}th{color:var(--navy)}
 .access body{}
 body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--text:#fff;--muted:#ddd;--line:#777;--navy:#fff;--navy2:#111;--blue:#ffd400}.high-contrast .panel,.high-contrast .hero,.high-contrast .card,.high-contrast .modalbox{background:#000;color:#fff}.high-contrast input,.high-contrast select,.high-contrast textarea{background:#111;color:#fff}
-.session{font-size:12px;margin-left:8px;opacity:.85}.mobile-tools{display:none;background:#0b3a63;padding:8px 12px;gap:8px;position:sticky;top:80px;z-index:19}.mobile-tools .toolbtn{flex:1;padding:9px 8px;font-size:12px}.hardware{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.device{padding:14px;border:1px solid var(--line);border-radius:14px;background:#fbfdff}.device strong{display:block;color:var(--navy);margin-bottom:5px}.device .ok{color:#15803d}.device .warn{color:#b45309}.device .off{color:#b42318}.statusdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:currentColor;margin-right:6px}
+.session{font-size:12px;margin-left:8px;opacity:.85}.mobile-tools{display:none;background:#0b3a63;padding:8px 12px;gap:8px;position:sticky;top:80px;z-index:19}.mobile-tools .toolbtn{flex:1;padding:9px 8px;font-size:12px}.hardware{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.device{padding:14px;border:1px solid var(--line);border-radius:14px;background:#fbfdff}.device strong{display:block;color:var(--navy);margin-bottom:5px}.device .ok{color:#15803d}.device .warn{color:#b45309}.device .off{color:#b42318}.statusdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:currentColor;margin-right:6px}.modebar{max-width:1180px;margin:10px auto 0;padding:0 22px}.modepill{display:inline-flex;align-items:center;gap:7px;background:#fff3cd;border:1px solid #efd27b;color:#624a00;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800}.secure-note{background:#eefbf3;border:1px solid #b9e2c8;border-radius:12px;padding:12px;margin:12px 0}.pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px;margin:14px auto}.pinpad button{padding:15px;border-radius:11px;border:1px solid var(--line);background:#f8fbfe;font-weight:900;font-size:18px}.pin-display{font-size:26px;letter-spacing:10px;text-align:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}
 @media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.kpis{grid-template-columns:repeat(2,1fr)}.tools{display:none}.mobile-tools{display:flex}.hardware{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.language-grid{grid-template-columns:1fr}.language-grid button:last-child{grid-column:auto}.language-gate-box{padding:22px}.language-gate-box h1{font-size:24px}main{padding:14px}.grid{grid-template-columns:1fr 1fr;gap:10px}.card{min-height:146px;padding:14px}.card h3{font-size:16px}.hero h2{font-size:22px}.brand h1{font-size:16px}.seal{width:44px;height:44px}.actions .btn{flex:1 1 45%}.row{font-size:13px}}
 </style>
@@ -112,6 +112,7 @@ body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--te
     <button class="card" onclick="openService('integration')"><div class="icon">🔌</div><h3><span data-i18n="integration">System Integration</span></h3><p>Leadership/IT view of how kiosk services connect to authorized Clerk systems, payments, printers and audit services.</p></button>
     <button class="card" onclick="openService('demo')"><div class="icon">🎯</div><h3><span data-i18n="leadership">Leadership Demo</span></h3><p>Presentation-ready overview of the kiosk concept, benefits, deployment phases and safeguards.</p></button>
     <button class="card" onclick="openService('hardware')"><div class="icon">🖥️</div><h3>Hardware & Device Center</h3><p>Prototype controls for scanner/camera, card reader, printer, receipt printer, QR delivery and device health.</p></button>
+    <button class="card" onclick="openService('itpackage')"><div class="icon">🧩</div><h3>IT Integration Package</h3><p>Technical requirements, system interfaces, security controls, testing gates and pilot acceptance criteria for Clerk IT.</p></button>
   </div>
 </section>
 
@@ -123,6 +124,17 @@ body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--te
 
 <div class="footer">Miami-Dade Clerk Self-Service Kiosk • Concept Prototype • No real payment or official record is processed by this demo.</div>
 
+
+<div id="privacyModal" class="modal"><div class="modalbox">
+  <h2>Privacy & Session Notice</h2>
+  <p>This is a public self-service session. Do not leave the kiosk while your information is displayed.</p>
+  <div class="secure-note"><strong>Session protection:</strong> the prototype automatically clears the session after inactivity or when you select Start Over.</div>
+  <div class="actions">
+    <button class="btn primary" onclick="acceptPrivacy()">Continue</button>
+    <button class="btn secondary" onclick="showLanguageGate();hideModal('privacyModal')">Back</button>
+  </div>
+</div></div>
+
 <div id="languageModal" class="modal"><div class="modalbox">
   <h2><span data-i18n="choose_language">Choose Language</span></h2><p><span data-i18n="select_language">Select the preferred kiosk language.</span></p>
   <div class="actions"><button class="btn primary" onclick="setLang('en')">English</button><button class="btn secondary" onclick="setLang('es')">Spanish</button><button class="btn secondary" onclick="setLang('kri')">Krio</button><button class="btn secondary" onclick="setLang('fr')">French</button><button class="btn secondary" onclick="setLang('ru')">Russian</button><button class="btn secondary" onclick="hideModal('languageModal')"><span data-i18n="cancel">Cancel</span></button></div>
@@ -131,6 +143,21 @@ body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--te
 <div id="accessModal" class="modal"><div class="modalbox">
   <h2><span data-i18n="accessibility">Accessibility</span></h2>
   <div class="actions"><button class="btn secondary" onclick="document.body.classList.toggle('large-text')">A+ Large Text</button><button class="btn secondary" onclick="document.body.classList.toggle('high-contrast')">◐ High Contrast</button><button class="btn secondary" onclick="speakPage()">🔊 Read Screen</button><button class="btn secondary" onclick="hideModal('accessModal')"><span data-i18n="done">Done</span></button></div>
+</div></div>
+
+
+<div id="adminLoginModal" class="modal"><div class="modalbox">
+  <h2>Employee Access</h2>
+  <p>Restricted prototype area. Production access would use Miami-Dade identity, MFA and role-based permissions.</p>
+  <div class="pin-display" id="pinDisplay">••••</div>
+  <div class="pinpad">
+    <button onclick="pinKey('1')">1</button><button onclick="pinKey('2')">2</button><button onclick="pinKey('3')">3</button>
+    <button onclick="pinKey('4')">4</button><button onclick="pinKey('5')">5</button><button onclick="pinKey('6')">6</button>
+    <button onclick="pinKey('7')">7</button><button onclick="pinKey('8')">8</button><button onclick="pinKey('9')">9</button>
+    <button onclick="pinClear()">Clear</button><button onclick="pinKey('0')">0</button><button onclick="pinSubmit()">Enter</button>
+  </div>
+  <p style="font-size:12px;color:#5f7185">Demo PIN: 2468</p>
+  <div class="actions"><button class="btn secondary" onclick="hideModal('adminLoginModal');goHome()">Cancel</button></div>
 </div></div>
 
 <div id="payModal" class="modal"><div class="modalbox">
@@ -150,18 +177,18 @@ const service=document.getElementById('service'), home=document.getElementById('
 function showModal(id){document.getElementById(id).classList.add('open'); resetTimer()}
 function hideModal(id){document.getElementById(id).classList.remove('open'); resetTimer()}
 function goHome(){service.classList.remove('active');home.classList.add('active');content.innerHTML='';resetTimer()}
-function startOver(){goHome();document.body.classList.remove('large-text','high-contrast');secondsLeft=600;showLanguageGate()}
+function startOver(){adminUnlocked=false;goHome();document.body.classList.remove('large-text','high-contrast');secondsLeft=600;showLanguageGate()}
 function resetTimer(){secondsLeft=600}
 ['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,resetTimer,{passive:true}));
 setInterval(()=>{secondsLeft--; let m=Math.floor(secondsLeft/60),s=secondsLeft%60; document.getElementById('sessionTimer').textContent=`Session ${m}:${String(s).padStart(2,'0')}`; if(secondsLeft<=0){alert('Session ended for privacy. Returning to the home screen.');startOver()}},1000);
 function speakPage(){if('speechSynthesis' in window){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(document.body.innerText.slice(0,2500)))}}
 function openService(type){
   home.classList.remove('active');service.classList.add('active');window.scrollTo(0,0);resetTimer();
-  const map={traffic:'Traffic Tickets',parking:'Parking Tickets',civil:'Civil & Court Cases',family:'Family & Probate',marriage:'Marriage License Intake',records:'Court & Official Records',appointments:'Appointments',receipts:'Payments & Receipts',print:'Print Documents',help:'Clerk Assistance',admin:'Employee Administration',integration:'System Integration',demo:'Leadership Demo',hardware:'Hardware & Device Center'};
+  const map={traffic:'Traffic Tickets',parking:'Parking Tickets',civil:'Civil & Court Cases',family:'Family & Probate',marriage:'Marriage License Intake',records:'Court & Official Records',appointments:'Appointments',receipts:'Payments & Receipts',print:'Print Documents',help:'Clerk Assistance',admin:'Employee Administration',integration:'System Integration',demo:'Leadership Demo',hardware:'Hardware & Device Center',itpackage:'IT Integration Package'};
   document.getElementById('crumb').textContent=map[type]||'Service';
   if(type==='traffic') traffic(); else if(type==='parking') parking(); else if(type==='civil') civil(); else if(type==='family') family();
   else if(type==='marriage') marriage(); else if(type==='records') records(); else if(type==='appointments') appointments(); else if(type==='receipts') receipts();
-  else if(type==='print') printCenter(); else if(type==='help') help(); else if(type==='admin') admin(); else if(type==='integration') integration(); else if(type==='demo') leadershipDemo(); else if(type==='hardware') hardwareCenter();
+  else if(type==='print') printCenter(); else if(type==='help') help(); else if(type==='admin') requireAdmin(); else if(type==='integration') integration(); else if(type==='demo') leadershipDemo(); else if(type==='hardware') hardwareCenter(); else if(type==='itpackage') itPackage();
 }
 
 function officialLink(label,url){
@@ -206,7 +233,7 @@ function admin(){panel('Employee Administration Dashboard',`<div class="adminbar
 <h3>Audit Log Preview</h3><table><tr><th>Time</th><th>Kiosk</th><th>Event</th></tr><tr><td>10:11</td><td>K-001</td><td>Traffic payment completed</td></tr><tr><td>10:13</td><td>K-004</td><td>Document printed - 4 pages</td></tr><tr><td>10:16</td><td>K-009</td><td>Session privacy reset</td></tr></table>
 <div class="actions"><button class="btn secondary" onclick="alert('Demo: daily/weekly service, revenue, printing and device-health reports would be generated here.')">Reports</button><button class="btn secondary" onclick="alert('Demo: configuration changes would require permissions and be written to the audit log.')">Save Settings</button><button class="btn primary" onclick="goHome()">Exit Admin</button></div>`)}
 function pay(amount,label){paymentContext={amount,label};document.getElementById('payText').innerHTML=`<strong>${label}</strong><br>Amount to charge: <strong>$${Number(amount).toFixed(2)}</strong>`;showModal('payModal')}
-function completePayment(){hideModal('payModal');let tx='MDC-'+Math.floor(100000+Math.random()*899999);panel('Payment Approved',`<div class="result"><div class="row"><span>Transaction</span><strong>${tx}</strong></div><div class="row"><span>Description</span><strong>${paymentContext.label}</strong></div><div class="row"><span>Amount</span><strong>$${Number(paymentContext.amount).toFixed(2)}</strong></div><div class="row"><span>Status</span><strong><span class="badge">APPROVED</span></strong></div></div><div class="notice">No real money was charged. In production this screen would wait for the approved payment processor and device before showing success.</div><div class="actions"><button class="btn secondary" onclick="window.print()">Print Receipt</button><button class="btn secondary" onclick="alert('Demo: receipt would be sent electronically after verification.')">Email / Text Receipt</button><button class="btn primary" onclick="goHome()">Finish & Clear Session</button></div>`)}
+function completePayment(){hideModal('payModal');let tx='MDC-'+Math.floor(100000+Math.random()*899999);panel('Payment Approved',`<div class="result"><div class="row"><span>Transaction</span><strong>${tx}</strong></div><div class="row"><span>Description</span><strong>${paymentContext.label}</strong></div><div class="row"><span>Amount</span><strong>$${Number(paymentContext.amount).toFixed(2)}</strong></div><div class="row"><span>Status</span><strong><span class="badge">APPROVED</span></strong></div></div><div class="notice">No real money was charged. In production this screen would wait for the approved payment processor and device before showing success.</div><div class="actions"><button class="btn secondary" onclick="window.print()">Print Receipt</button><button class="btn secondary" onclick="alert('Demo: receipt would be sent electronically after verification.')">Email / Text Receipt</button><button class="btn primary" onclick="startOver()">Finish & Clear Session</button></div>`)}
 
 function integration(){panel('System Integration Architecture',`
 <p>This screen shows how the public kiosk can evolve from a prototype into an authorized Miami-Dade production system.</p>
@@ -219,6 +246,7 @@ function integration(){panel('System Integration Architecture',`
 <div class="row"><span>Hardware Layer</span><strong>Printer / scanner / card reader / receipt device</strong></div>
 <div class="row"><span>Security & Audit</span><strong>Session clearing + logs + role-based administration</strong></div>
 </div>
+<div class="secure-note"><strong>Current build status:</strong> UX prototype, official public-service handoffs, language-first entry, privacy reset, employee access gate, printing workflow and hardware simulation are complete. The remaining production dependency is authorized systems integration.</div>
 <h3>Service Integration Status</h3>
 <table><tr><th>Service</th><th>Prototype</th><th>Production Requirement</th></tr>
 <tr><td>Traffic / Parking</td><td>Interactive demo + official public-service handoff</td><td>Authorized citation/payment connection for seamless in-kiosk use</td></tr>
@@ -235,6 +263,8 @@ function leadershipDemo(){panel('Leadership Demonstration',`
 <div class="kpis"><div class="kpi"><strong>11+</strong>Service Workflows</div><div class="kpi"><strong>5</strong>Language Options</div><div class="kpi"><strong>1</strong>Unified Experience</div><div class="kpi"><strong>100%</strong>Auditable Goal</div></div>
 <h3>Resident Experience</h3>
 <div class="result"><div class="row"><span>1</span><strong>Select service</strong></div><div class="row"><span>2</span><strong>Locate citation, case, record or intake</strong></div><div class="row"><span>3</span><strong>Review official information / eligible options</strong></div><div class="row"><span>4</span><strong>Pay when applicable</strong></div><div class="row"><span>5</span><strong>Print or receive confirmation/receipt</strong></div><div class="row"><span>6</span><strong>Automatically clear the public session</strong></div></div>
+<h3>Pilot Readiness Controls</h3>
+<div class="result"><div class="row"><span>Language-first entry</span><strong>Enabled</strong></div><div class="row"><span>Privacy notice</span><strong>Enabled</strong></div><div class="row"><span>Session timeout/reset</span><strong>Enabled</strong></div><div class="row"><span>Employee access gate</span><strong>Enabled (demo PIN)</strong></div><div class="row"><span>Hardware-health simulation</span><strong>Enabled</strong></div><div class="row"><span>Official public-service handoff</span><strong>Enabled</strong></div></div>
 <h3>Deployment Path</h3>
 <table><tr><th>Phase</th><th>Goal</th></tr><tr><td>1 — Prototype</td><td>Validate touch workflows, accessibility and resident experience.</td></tr><tr><td>2 — Integration Pilot</td><td>Connect selected approved Clerk services in a controlled test environment.</td></tr><tr><td>3 — Hardware Pilot</td><td>Add approved payment terminal, printer/scanner and kiosk monitoring.</td></tr><tr><td>4 — Limited Deployment</td><td>Deploy at selected Clerk locations and measure usage, reliability and counter deflection.</td></tr><tr><td>5 — Expansion</td><td>Scale based on security review, operational results and leadership approval.</td></tr></table>
 <div class="actions"><button class="btn primary" onclick="integration()">View IT Architecture</button><button class="btn gold" onclick="printQuote('Kiosk leadership concept summary',3)">Print Concept Summary</button><button class="btn secondary" onclick="goHome()">Home</button></div>`)}
@@ -288,8 +318,9 @@ function beginSession(code){
   applyTranslations();
   hideLanguageGate();
   secondsLeft=600;
-  goHome();
+  showModal("privacyModal");
 }
+function acceptPrivacy(){hideModal("privacyModal");goHome();secondsLeft=600;}
 
 const langNames={en:"English",es:"Spanish",kri:"Krio",fr:"French",ru:"Russian"};
 let currentLangCode="en";
@@ -327,6 +358,78 @@ function simulateScan(){panel('Scanner / Camera Test',`<p>Place the document or 
 function showQRDemo(){panel('QR / Mobile Delivery',`<p>Prototype mobile handoff code:</p><div style="font-size:70px;text-align:center;padding:20px">▦</div><div class="result"><div class="row"><span>Delivery</span><strong>Secure temporary link</strong></div><div class="row"><span>Expiration</span><strong>15 minutes - demo</strong></div></div><div class="actions"><button class="btn primary" onclick="hardwareCenter()">Done</button></div>`)}
 function offlineDemo(){panel('Service Temporarily Unavailable',`<h3>We cannot reach the Clerk service right now.</h3><p>Your information has not been submitted. Please try again or request Clerk assistance.</p><div class="actions"><button class="btn primary" onclick="hardwareCenter()">Try Again</button><button class="btn secondary" onclick="help()">Request Help</button><button class="btn secondary" onclick="goHome()">Return Home</button></div>`)}
 
+
+
+let adminUnlocked=false, adminPin="";
+function requireAdmin(){
+  if(adminUnlocked){admin();return;}
+  adminPin=""; updatePin(); showModal("adminLoginModal");
+}
+function pinKey(n){if(adminPin.length<4){adminPin+=n;updatePin();}}
+function pinClear(){adminPin="";updatePin();}
+function updatePin(){const el=document.getElementById("pinDisplay");if(el)el.textContent=(adminPin||"").padEnd(4,"•");}
+function pinSubmit(){
+  if(adminPin==="2468"){adminUnlocked=true;hideModal("adminLoginModal");admin();adminPin="";updatePin();}
+  else{alert("Incorrect demo PIN.");pinClear();}
+}
+
+
+function itPackage(){panel('Clerk IT Integration Package',`
+<p>This is the handoff view for converting the prototype into an authorized pilot. It separates what the browser demo already proves from what requires Miami-Dade Clerk IT, security, payment and hardware integration.</p>
+
+<h3>1. Proposed System Interfaces</h3>
+<table>
+<tr><th>Capability</th><th>Current Prototype</th><th>Production Interface Needed</th></tr>
+<tr><td>Traffic citations</td><td>Demo search + official-service handoff</td><td>Approved traffic search, case-detail, balance, election/court-request and payment services</td></tr>
+<tr><td>Parking citations</td><td>Demo search + official-service handoff</td><td>Approved citation lookup, amount-due and payment services</td></tr>
+<tr><td>Civil / Family / Probate</td><td>Demo case search + official-service handoff</td><td>Approved Odyssey/case-search and eligible-document services</td></tr>
+<tr><td>Marriage</td><td>Guided intake + official pre-application handoff</td><td>Approved pre-application, appointment and confirmation interfaces</td></tr>
+<tr><td>Official records</td><td>Demo search / print flow + official-service handoff</td><td>Approved record search, document retrieval, certification/copy rules and fee metadata</td></tr><tr><td>Criminal court search</td><td>Identified as an available Clerk public system; not yet exposed as a kiosk tile</td><td>Scope decision + approved criminal case search/document interfaces</td></tr>
+<tr><td>Payments</td><td>Simulated approval</td><td>County-approved processor, terminal SDK/service, reconciliation and refund workflow</td></tr>
+<tr><td>Printing</td><td>Page-count + fee + receipt simulation</td><td>Authorized document stream, print service, printer queue, paper/toner status and approved fee configuration</td></tr>
+</table>
+
+<h3>2. Security & Privacy Controls</h3>
+<div class="result">
+<div class="row"><span>Public sessions</span><strong>No persistent personal-data storage on kiosk</strong></div>
+<div class="row"><span>Session reset</span><strong>Timeout, Start Over and transaction completion clear resident data</strong></div>
+<div class="row"><span>Employee administration</span><strong>County identity + MFA + role-based access required</strong></div>
+<div class="row"><span>Network traffic</span><strong>TLS, allow-listed endpoints and centralized certificate management</strong></div>
+<div class="row"><span>Payment data</span><strong>Kept inside approved payment-terminal/processor boundary</strong></div>
+<div class="row"><span>Logs</span><strong>Transaction IDs and operational events without unnecessary sensitive data</strong></div>
+<div class="row"><span>Documents</span><strong>Temporary retrieval / print queue with automatic purge after completion or failure</strong></div>
+</div>
+
+<h3>3. Environment Plan</h3>
+<table><tr><th>Environment</th><th>Purpose</th></tr>
+<tr><td>Prototype</td><td>Public UI, workflow and leadership demonstration only.</td></tr>
+<tr><td>Development / Sandbox</td><td>Approved test credentials and non-production data for API and hardware development.</td></tr>
+<tr><td>Integration Test</td><td>End-to-end case lookup, document, payment, receipt and printer testing.</td></tr>
+<tr><td>Pilot</td><td>Selected physical kiosks with production controls, monitoring and limited scope.</td></tr>
+<tr><td>Production</td><td>Approved deployment with support ownership, SLAs, change management and reporting.</td></tr></table>
+
+<h3>4. Pilot Acceptance Criteria</h3>
+<div class="result">
+<div class="row"><span>Language-first launch</span><strong>Pass</strong></div>
+<div class="row"><span>Accessibility / touch workflow</span><strong>Validate with County accessibility review</strong></div>
+<div class="row"><span>Session privacy clearing</span><strong>Must pass forced timeout / reboot / error tests</strong></div>
+<div class="row"><span>Case / citation accuracy</span><strong>Must match source system</strong></div>
+<div class="row"><span>Payment reconciliation</span><strong>100% traceable transaction IDs</strong></div>
+<div class="row"><span>Print accounting</span><strong>Page count, approved fees and receipt must reconcile</strong></div>
+<div class="row"><span>Hardware monitoring</span><strong>Printer, scanner, terminal and network status visible to staff</strong></div>
+<div class="row"><span>Failure behavior</span><strong>No false success screen; resident gets retry/help path</strong></div>
+</div>
+
+<h3>5. Official Public Systems Confirmed for Discovery / Handoff</h3>
+<table><tr><th>System</th><th>Prototype Use</th></tr>
+<tr><td>Traffic Online System</td><td>Official public handoff while authorized integration is pending</td></tr>
+<tr><td>Parking Violations Online System</td><td>Official public handoff while authorized integration is pending</td></tr>
+<tr><td>Civil, Family & Probate Online System</td><td>Official public handoff and workflow reference</td></tr>
+<tr><td>Marriage License Online Pre-Application</td><td>Official public handoff and workflow reference</td></tr>
+<tr><td>Official Records Online System</td><td>Official public search / records reference</td></tr>
+</table>
+<div class="notice"><strong>Fee governance:</strong> production copy, certification, service and kiosk-print charges must come from the Clerk's approved fee schedule/policy. The prototype's per-page print charge remains a configurable demonstration value only.</div>
+<div class="actions"><button class="btn primary" onclick="integration()">System Architecture</button><button class="btn gold" onclick="printQuote('Clerk IT integration readiness summary',5)">Print IT Summary</button><button class="btn secondary" onclick="leadershipDemo()">Leadership View</button><button class="btn secondary" onclick="goHome()">Home</button></div>`)}
 
 </script>
 </body>
