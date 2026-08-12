@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Miami-Dade Clerk Self-Service Kiosk</title>
+<title>Miami-Dade Clerk Self-Service Kiosk - Version 3</title>
 <style>
 :root{
   --navy:#062744; --navy2:#0b3a63; --blue:#0e5f9d; --light:#f3f7fb; --line:#c9d6e2;
@@ -59,7 +59,7 @@ body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--te
 <header class="topbar">
   <div class="brand">
     <div class="seal">MD</div>
-    <div><h1>Miami-Dade Clerk of the Court and Comptroller</h1><p>Self-Service Kiosk Prototype</p></div>
+    <div><h1>Miami-Dade Clerk of the Court and Comptroller</h1><p>Self-Service Kiosk Prototype • Version 3</p></div>
     <div class="tools">
       <button class="toolbtn" onclick="showModal('languageModal')">🌐 Language</button>
       <button class="toolbtn" onclick="showModal('accessModal')">♿ Accessibility</button>
@@ -74,7 +74,7 @@ body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--te
   <div class="hero">
     <h2>How can we help you today?</h2>
     <p>Choose a service below. This prototype demonstrates a future public self-service experience for common Clerk services.</p>
-    <div class="notice"><strong>Prototype only:</strong> Searches, payments, records, appointments and receipts shown here are simulated. A production kiosk would connect to official Clerk, court, payment, identity, printer and scheduling systems.</div>
+    <div class="notice"><strong>Version 3 • Presentation / Integration Prototype</strong><br><strong>Prototype only:</strong> Searches, payments, records, appointments and receipts shown here are simulated. A production kiosk would connect to official Clerk, court, payment, identity, printer and scheduling systems.</div>
   </div>
   <div class="grid">
     <button class="card" onclick="openService('traffic')"><div class="icon">🚦</div><h3>Traffic Tickets</h3><p>Check citation status, amounts due, payment options, payment plans and receipts.</p></button>
@@ -88,6 +88,8 @@ body.large-text{font-size:120%} body.high-contrast{--light:#000;--card:#000;--te
     <button class="card" onclick="openService('print')"><div class="icon">🖨️</div><h3>Print Documents</h3><p>Review page count, printing fee, payment and kiosk print confirmation.</p></button>
     <button class="card" onclick="openService('help')"><div class="icon">🙋</div><h3>Clerk Assistance</h3><p>Get directions, common answers or request assistance from Clerk staff.</p></button>
     <button class="card" onclick="openService('admin')"><div class="icon">🔐</div><h3>Employee Administration</h3><p>Prototype dashboard for kiosk health, reports, settings and audit logs.</p></button>
+    <button class="card" onclick="openService('integration')"><div class="icon">🔌</div><h3>System Integration</h3><p>Leadership/IT view of how kiosk services connect to authorized Clerk systems, payments, printers and audit services.</p></button>
+    <button class="card" onclick="openService('demo')"><div class="icon">🎯</div><h3>Leadership Demo</h3><p>Presentation-ready overview of the kiosk concept, benefits, deployment phases and safeguards.</p></button>
   </div>
 </section>
 
@@ -134,11 +136,11 @@ function setLang(l){currentLang=l;hideModal('languageModal');alert('Prototype la
 function speakPage(){if('speechSynthesis' in window){speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(document.body.innerText.slice(0,2500)))}}
 function openService(type){
   home.classList.remove('active');service.classList.add('active');window.scrollTo(0,0);resetTimer();
-  const map={traffic:'Traffic Tickets',parking:'Parking Tickets',civil:'Civil & Court Cases',family:'Family & Probate',marriage:'Marriage License Intake',records:'Court & Official Records',appointments:'Appointments',receipts:'Payments & Receipts',print:'Print Documents',help:'Clerk Assistance',admin:'Employee Administration'};
+  const map={traffic:'Traffic Tickets',parking:'Parking Tickets',civil:'Civil & Court Cases',family:'Family & Probate',marriage:'Marriage License Intake',records:'Court & Official Records',appointments:'Appointments',receipts:'Payments & Receipts',print:'Print Documents',help:'Clerk Assistance',admin:'Employee Administration',integration:'System Integration',demo:'Leadership Demo'};
   document.getElementById('crumb').textContent=map[type]||'Service';
   if(type==='traffic') traffic(); else if(type==='parking') parking(); else if(type==='civil') civil(); else if(type==='family') family();
   else if(type==='marriage') marriage(); else if(type==='records') records(); else if(type==='appointments') appointments(); else if(type==='receipts') receipts();
-  else if(type==='print') printCenter(); else if(type==='help') help(); else if(type==='admin') admin();
+  else if(type==='print') printCenter(); else if(type==='help') help(); else if(type==='admin') admin(); else if(type==='integration') integration(); else if(type==='demo') leadershipDemo();
 }
 function panel(title,body){content.innerHTML=`<div class="panel"><h2>${title}</h2>${body}</div>`}
 function traffic(){
@@ -179,6 +181,38 @@ function admin(){panel('Employee Administration Dashboard',`<div class="adminbar
 <div class="actions"><button class="btn secondary" onclick="alert('Demo: daily/weekly service, revenue, printing and device-health reports would be generated here.')">Reports</button><button class="btn secondary" onclick="alert('Demo: configuration changes would require permissions and be written to the audit log.')">Save Settings</button><button class="btn primary" onclick="goHome()">Exit Admin</button></div>`)}
 function pay(amount,label){paymentContext={amount,label};document.getElementById('payText').innerHTML=`<strong>${label}</strong><br>Amount to charge: <strong>$${Number(amount).toFixed(2)}</strong>`;showModal('payModal')}
 function completePayment(){hideModal('payModal');let tx='MDC-'+Math.floor(100000+Math.random()*899999);panel('Payment Approved',`<div class="result"><div class="row"><span>Transaction</span><strong>${tx}</strong></div><div class="row"><span>Description</span><strong>${paymentContext.label}</strong></div><div class="row"><span>Amount</span><strong>$${Number(paymentContext.amount).toFixed(2)}</strong></div><div class="row"><span>Status</span><strong><span class="badge">APPROVED</span></strong></div></div><div class="notice">No real money was charged. In production this screen would wait for the approved payment processor and device before showing success.</div><div class="actions"><button class="btn secondary" onclick="window.print()">Print Receipt</button><button class="btn secondary" onclick="alert('Demo: receipt would be sent electronically after verification.')">Email / Text Receipt</button><button class="btn primary" onclick="goHome()">Finish & Clear Session</button></div>`)}
+
+function integration(){panel('System Integration Architecture',`
+<p>This screen shows how the public kiosk can evolve from a prototype into an authorized Miami-Dade production system.</p>
+<div class="result">
+<div class="row"><span>Public Kiosk Interface</span><strong>Touch UI + Accessibility + Languages</strong></div>
+<div class="row"><span>Service Router</span><strong>Routes requests to approved Clerk services</strong></div>
+<div class="row"><span>Clerk Data Connectors</span><strong>Authorized APIs / internal services</strong></div>
+<div class="row"><span>Payment Layer</span><strong>Approved processor + terminal</strong></div>
+<div class="row"><span>Document Layer</span><strong>Eligible records + page count + print queue</strong></div>
+<div class="row"><span>Hardware Layer</span><strong>Printer / scanner / card reader / receipt device</strong></div>
+<div class="row"><span>Security & Audit</span><strong>Session clearing + logs + role-based administration</strong></div>
+</div>
+<h3>Service Integration Status</h3>
+<table><tr><th>Service</th><th>Prototype</th><th>Production Requirement</th></tr>
+<tr><td>Traffic / Parking</td><td>Interactive demo</td><td>Authorized citation/payment connection</td></tr>
+<tr><td>Civil / Family / Probate</td><td>Interactive demo</td><td>Authorized case and document services</td></tr>
+<tr><td>Marriage Intake</td><td>Guided intake demo</td><td>Official intake/appointment integration</td></tr>
+<tr><td>Official Records</td><td>Search/print demo</td><td>Authorized record retrieval and copy rules</td></tr>
+<tr><td>Payments</td><td>Simulated</td><td>PCI-compliant approved payment environment</td></tr>
+<tr><td>Printing</td><td>Fee + workflow demo</td><td>Printer service, document authorization and approved fee policy</td></tr></table>
+<div class="notice"><strong>Design principle:</strong> the kiosk should not scrape protected systems or store unnecessary customer information. Production integrations should be approved and documented by Clerk IT/security.</div>
+<div class="actions"><button class="btn primary" onclick="leadershipDemo()">Leadership Overview</button><button class="btn secondary" onclick="goHome()">Home</button></div>`)}
+function leadershipDemo(){panel('Leadership Demonstration',`
+<h3>One Kiosk. Multiple Clerk Services.</h3>
+<p>A unified self-service station designed to reduce routine counter traffic while giving residents a consistent, accessible way to complete common Clerk transactions.</p>
+<div class="kpis"><div class="kpi"><strong>11+</strong>Service Workflows</div><div class="kpi"><strong>3</strong>Language Options</div><div class="kpi"><strong>1</strong>Unified Experience</div><div class="kpi"><strong>100%</strong>Auditable Goal</div></div>
+<h3>Resident Experience</h3>
+<div class="result"><div class="row"><span>1</span><strong>Select service</strong></div><div class="row"><span>2</span><strong>Locate citation, case, record or intake</strong></div><div class="row"><span>3</span><strong>Review official information / eligible options</strong></div><div class="row"><span>4</span><strong>Pay when applicable</strong></div><div class="row"><span>5</span><strong>Print or receive confirmation/receipt</strong></div><div class="row"><span>6</span><strong>Automatically clear the public session</strong></div></div>
+<h3>Deployment Path</h3>
+<table><tr><th>Phase</th><th>Goal</th></tr><tr><td>1 — Prototype</td><td>Validate touch workflows, accessibility and resident experience.</td></tr><tr><td>2 — Integration Pilot</td><td>Connect selected approved Clerk services in a controlled test environment.</td></tr><tr><td>3 — Hardware Pilot</td><td>Add approved payment terminal, printer/scanner and kiosk monitoring.</td></tr><tr><td>4 — Limited Deployment</td><td>Deploy at selected Clerk locations and measure usage, reliability and counter deflection.</td></tr><tr><td>5 — Expansion</td><td>Scale based on security review, operational results and leadership approval.</td></tr></table>
+<div class="actions"><button class="btn primary" onclick="integration()">View IT Architecture</button><button class="btn gold" onclick="printQuote('Kiosk leadership concept summary',3)">Print Concept Summary</button><button class="btn secondary" onclick="goHome()">Home</button></div>`)}
+
 </script>
 </body>
 </html>
